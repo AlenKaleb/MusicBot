@@ -1,12 +1,12 @@
-import movies
+import musics
 
 
 def action_handler(action, parameters, return_var):
     return_values = {}
-    if action == 'trendings':
-        return_values = get_trendings(parameters, return_var)
+    if action == 'lancamento' or action == 'genero':
+        return_values = get_recommends(parameters, return_var)
     elif action == 'search':
-        return_values = search_movies(parameters, return_var)
+        return_values = search_musics(parameters, return_var)
     return {
             'skills': {
                 'main skill': {
@@ -15,32 +15,29 @@ def action_handler(action, parameters, return_var):
             }
         }
 
-def get_trendings(parameters, return_var):
-    is_day = (parameters['periodo'] == 'dia')
-    movie_titles = movies.get_trendings(is_day)
+def get_recommends(parameters, return_var):
+    music_titles = musics.get_launch_and_genre(parameters)
 
-    # trato os nomes aqui para facilitar, tratar no assistant eh mais complexo
-    # pois nao tenho o mesmo poder de programacao
-    movie_string = '\n\n'
-    for movie in movie_titles:
-        movie_string += movie + ',\n'
-    movie_string = movie_string[:-2]
+    # tratando retorno das musicas
+    music_string = '\n\n'
+    for music in music_titles:
+        music_string += music + ',\n'
+    music_string = music_string[:-2]
     return {
-        return_var: movie_string
+        return_var: music_string
     }
 
-def search_movies(parameters, return_var):
+def search_musics(parameters, return_var):
     query = parameters['termo']
-    movie_titles = movies.search_movies(query)
+    music_titles = musics.search_musics(query)
 
-    # trato os nomes aqui para facilitar, tratar no assistant eh mais complexo
-    # pois nao tenho o mesmo poder de programacao
-    movie_string = '\n\n'
-    for movie in movie_titles:
-        movie_string += movie + ',\n'
-    movie_string = movie_string[:-2]
+    # tratando retorno das musicas
+    music_string = '\n\n'
+    for music in music_titles:
+        music_string += music + ',\n'
+    music_string = music_string[:-2]
     return {
-        return_var: movie_string
+        return_var: music_string
     }
 
 

@@ -1,0 +1,561 @@
+{
+  "intents": [
+    {
+      "intent": "musics",
+      "examples": [
+        {
+          "text": "Quero ouvir musicas"
+        },
+        {
+          "text": "Quais musicas você me recomenda?"
+        },
+        {
+          "text": "Quero albums de musicas"
+        },
+        {
+          "text": "Me recomenda musicas para ouvir?"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "saudacao",
+      "examples": [
+        {
+          "text": "Boa tarde"
+        },
+        {
+          "text": "Oi"
+        },
+        {
+          "text": "Olá"
+        },
+        {
+          "text": "Tudo bem"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "finalizacao",
+      "examples": [
+        {
+          "text": "Adeus"
+        },
+        {
+          "text": "Até mais"
+        },
+        {
+          "text": "Um abraço"
+        },
+        {
+          "text": "Até logo"
+        },
+        {
+          "text": "Tchau"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "busca",
+      "examples": [
+        {
+          "text": "Quero procurar musicas"
+        },
+        {
+          "text": "Quero encontrar musicas"
+        },
+        {
+          "text": "Quero buscar musicas"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [
+    {
+      "entity": "recomendacao",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "genero",
+          "synonyms": [
+            "gênero"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "lancamento",
+          "synonyms": [
+            "lançamento"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "genero",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "classical",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "country",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "rock",
+          "synonyms": []
+        }
+      ],
+      "fuzzy_match": true
+    }
+  ],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    }
+  },
+  "dialog_nodes": [
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "As musicas recomendadas do genêro musical escolhido são: $resposta"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_3_1596388767362",
+      "conditions": "true",
+      "dialog_node": "node_10_1596388957011",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "As musicas lançadas no spotify recentemente são: $resposta"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_3_1594677663630",
+      "actions": [
+        {
+          "name": "lancamento",
+          "type": "client",
+          "parameters": {
+            "lancamento": "<? input.text ?>"
+          },
+          "result_variable": "resposta"
+        }
+      ],
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "@recomendacao:lancamento",
+      "dialog_node": "node_9_1596340135108",
+      "previous_sibling": "node_9_1596338524154",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Qual gênero musical deseja? Você pode escolher classical, rock ou country"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_3_1594677663630",
+      "context": {},
+      "conditions": "@recomendacao:genero",
+      "dialog_node": "node_9_1596338524154",
+      "previous_sibling": "slot_4_1596339466677",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_3_1594677663630",
+      "variable": "$recomendacao",
+      "dialog_node": "slot_4_1596339466677"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "As musicas lançadas recentemente no spotify são: $resposta"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_9_1596340135108",
+      "conditions": "true",
+      "dialog_node": "node_10_1596344097688",
+      "previous_sibling": "slot_5_1596345030144",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "slot",
+      "parent": "node_9_1596340135108",
+      "dialog_node": "slot_5_1596345030144"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_5_1596345030144",
+      "event_name": "focus",
+      "dialog_node": "handler_7_1596345030147",
+      "previous_sibling": "handler_4_1596345030147"
+    },
+    {
+      "type": "event_handler",
+      "parent": "slot_5_1596345030144",
+      "event_name": "input",
+      "dialog_node": "handler_4_1596345030147"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_9_1596338524154",
+      "variable": "$genero",
+      "dialog_node": "slot_10_1596342701236",
+      "previous_sibling": "node_3_1596388767362"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Qual genero musical deseja? Você pode escolher classical, rock ou raggae"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_9_1596338524154",
+      "actions": [
+        {
+          "name": "genero",
+          "type": "client",
+          "parameters": {
+            "seed_genres": "<? input.text ?>"
+          },
+          "result_variable": "resposta"
+        }
+      ],
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "true",
+      "dialog_node": "node_3_1596388767362",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "event_handler",
+      "parent": "slot_4_1596339466677",
+      "event_name": "nomatch",
+      "dialog_node": "handler_5_1596345708905",
+      "previous_sibling": "handler_9_1596339466727"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "Quais recomendações deseja optar? Você pode escolher entre lançamento ou  genero"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_4_1596339466677",
+      "event_name": "focus",
+      "dialog_node": "handler_9_1596339466727",
+      "previous_sibling": "handler_10_1596339466727"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_4_1596339466677",
+      "context": {
+        "recomendacao": "@recomendacao"
+      },
+      "conditions": "@recomendacao",
+      "event_name": "input",
+      "dialog_node": "handler_10_1596339466727"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_4_1594681765874",
+      "actions": [
+        {
+          "name": "search",
+          "type": "client",
+          "parameters": {
+            "termo": "<? input.text ?>"
+          },
+          "result_variable": "resposta"
+        }
+      ],
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "true",
+      "dialog_node": "node_8_1594681785092",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "Qual genero musicas deseja? Você pode escolher classical, rock ou raggae"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_10_1596342701236",
+      "event_name": "focus",
+      "dialog_node": "handler_4_1596342701271",
+      "previous_sibling": "handler_5_1596342701271"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_10_1596342701236",
+      "context": {
+        "genero": "@genero"
+      },
+      "conditions": "@genero",
+      "event_name": "input",
+      "dialog_node": "handler_5_1596342701271"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "As músicas encontradas são: $resposta"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_8_1594681785092",
+      "conditions": "true",
+      "dialog_node": "node_3_1594682071373",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Quais recomendações você deseja? Você pode escolher entre lançamento ou  gênero"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "context": {},
+      "conditions": "#musics",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_3_1594677663630",
+      "previous_sibling": "node_10_1594668898251",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Digite o termo de busca"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#busca",
+      "dialog_node": "node_4_1594681765874",
+      "previous_sibling": "node_3_1594677663630",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Oi"
+              },
+              {
+                "text": "Olá"
+              },
+              {
+                "text": "Oi, tudo bem"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#saudacao",
+      "dialog_node": "node_10_1594668898251",
+      "previous_sibling": "Bem-vindo"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Tchau"
+              },
+              {
+                "text": "Até logo"
+              },
+              {
+                "text": "Até breve"
+              },
+              {
+                "text": "Adeus"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "random"
+          }
+        ]
+      },
+      "conditions": "#finalizacao",
+      "dialog_node": "node_2_1594689965206",
+      "previous_sibling": "node_4_1594681765874"
+    },
+    {
+      "type": "standard",
+      "title": "Em outros casos",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Eu não entendi. Você pode tentar reformular a frase."
+              },
+              {
+                "text": "Você pode reformular sua afirmação? Eu não estou entendendo."
+              },
+              {
+                "text": "Eu não entendi o sentido."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "anything_else",
+      "dialog_node": "Em outros casos",
+      "previous_sibling": "node_2_1594689965206",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "Bem-vindo",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Olá. Como posso te ajudar?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "welcome",
+      "dialog_node": "Bem-vindo"
+    }
+  ],
+  "counterexamples": [],
+  "system_settings": {
+    "disambiguation": {
+      "prompt": "Você quis dizer:",
+      "enabled": true,
+      "randomize": true,
+      "max_suggestions": 5,
+      "suggestion_text_policy": "title",
+      "none_of_the_above_prompt": "Nenhuma das anteriores"
+    },
+    "system_entities": {
+      "enabled": true
+    },
+    "human_agent_assist": {
+      "prompt": "Você quis dizer:"
+    }
+  },
+  "learning_opt_out": false,
+  "name": "MusicBot",
+  "language": "pt-br",
+  "description": "Bot para buscar musicas no Spotify"
+}

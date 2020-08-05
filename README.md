@@ -1,36 +1,34 @@
-# MovieBot
+# MusicBot
 
-Chatbot de consulta de filmes no telegram. Utiliza o Watson Assistant como gerenciador e a API do The Movie Database para consultas.
-
-## Branches
-
-Temos 3 branches para o projeto:
-
-* Master: branch original que utiliza o long polling do Telegram
-* GCloud: branch para deploy no GCloud App Engine. Utiliza webhooks manualmente com o Flask
-* Heroku: branch para deploy no Heroku, utilizando a funcionalidade de webhook existente na biblioteca python-telegram-bot
+Chatbot de consulta de musicas no telegram. Utiliza o Watson Assistant como gerenciador e a API do Spotify para consultas.
 
 ## Configurações
 
-Tanto a branch master quanto a GCloud precisa-se que se configure o arquivo de configuração config.ini com as configuraçõe de cada
+Precisa-se que se configure o arquivo de configuração config.ini com as configuraçõe de cada
 api utilizada no projeto.
 
-A branch do Heroku foi feita para se realizar deploy automatico a partir do GitHub, portanto utiliza variáveis de ambiente para configuração:
+A seguir as variáveis que devem ser configuradas no arquivo config.ini:
 
-A seguir as variáveis que devem ser configuradas no Heroku:
-
-* WATSON_ASSISTANT_TOKEN: token IAM do Watson Assistant
+* IAM_TOKEN: token IAM do Watson Assistant
 * WATSON_ASSISTANT_URL: URL do Watson Assistant
 * ASSISTANT_ID: ID do Assistant criado no Watson Assistant
 * S2T_TOKEN: token IAM da API Watson SpeechToText
 * S2T_URL: URL da API Watson SpeechToText
 * T2S_TOKEN: token IAM da API Watson TextToSpeech
 * T2S_URL: URL da API Watson TExtToSpeech
-* TELEGRAM_BOT_TOKEN: token do bot criado no Telegram
-* TELEGRAM_WEBHOOK: url da aplicação do heroku (https://\<appname\>.herokuapp.com)
-* TMDB_KEY: chave da API do TMDB
+* BOT_TOKEN: token do bot criado no Telegram
+* SPOTIFY_KEY: chave da API do SPOTIFY
+* CLIENT_ID: client_id adquirido na criação do APP no Spotify Developer
+* CLIENT_SECRET=client_secret adquirido na criação do APP no Spotify Developer
+* TOKEN_URL=https://accounts.spotify.com/api/token
 
-## Bugs conhecidos
+## Bibliotecas necessárias
 
-* A branch GCloud não está lidando muito bem com o gerenciamento de sessão do Watson Assistant.
-Toda vez que uma mensagem é recebida, uma nova sessão é criada
+* pip install ibm-watson
+* pip install oauthlib
+* pip install requests-oauthlib
+* pip install requests
+* pip install ibm-cloud-sdk-core
+* pip install logging42
+* pip install configparser2
+* pip install python-telegram-bot
