@@ -261,7 +261,7 @@
           {
             "values": [
               {
-                "text": "Qual genero musical deseja? Você pode escolher classical, rock ou raggae"
+                "text": "Qual genero musical deseja? Você pode escolher classical, rock ou country"
               }
             ],
             "response_type": "text",
